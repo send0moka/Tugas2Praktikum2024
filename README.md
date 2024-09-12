@@ -1,3 +1,7 @@
+Nama       : Jehian Athaya Tsani Az Zuhry
+NIM        : H1D022006
+Shift Baru : D
+
 # Proses Passing Data dari Form ke Tampilan
 
 ## 1. Pengumpulan Data di FormData
