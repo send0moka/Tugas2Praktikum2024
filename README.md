@@ -1,23 +1,93 @@
-# Tugas Pertemuan 2
+# Proses Passing Data dari Form ke Tampilan
 
-Fork dan clone repository ini, lalu jalankan perintah 
+## 1. Pengumpulan Data di FormData
+
+`TextEditingController` digunakan untuk mengelola input dari user:
+
+```dart
+final _namaController = TextEditingController();
+final _nimController = TextEditingController();
+final _tahunController = TextEditingController();
 ```
-flutter pub get
+
+Setiap controller ini terhubung ke `TextFormField` masing-masing. `TextFormField` menggunakan controller untuk menyimpan dan memperbarui nilai input user secara otomatis.
+
+## 2. Validasi dan Pengiriman Data
+
+Ketika user menekan button "Simpan", method `_submitForm()` dipanggil:
+
+```dart
+void _submitForm() {
+  if (_formKey.currentState!.validate()) {
+    String nama = _namaController.text;
+    String nim = _nimController.text;
+    int tahun = int.parse(_tahunController.text);
+    
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => 
+          TampilData(nama: nama, nim: nim, tahun: tahun),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+  }
+}
 ```
-Buatlah tampilan form yang berisi nama, nim, dan tahun lahir pada file `ui/form_data.dart`, lalu buatlah tampilan hasil dari input data tersebut pada file `ui/tampil_data.dart`
 
-JELASKAN PROSES PASSING DATA DARI FORM MENUJU TAMPILAN DENGAN FILE `README.md`
+Proses ini melibatkan:
+1. Validasi form `_formKey.currentState!.validate()`.
+2. Jika valid, nilai dari setiap controller diambil dan disimpan dalam variabel.
+3. Nilai `tahun` dikonversi dari String ke int menggunakan `int.parse()`.
 
-Buat tampilan semenarik mungkin untuk dilihat.
+## 3. Navigasi dan Passing Data
 
+Setelah data dikumpulkan, `Navigator.of(context).push()` digunakan untuk berpindah ke halaman `TampilData`. Data dikirim sebagai parameter konstruktor:
 
-Nama : ___
+```dart
+TampilData(nama: nama, nim: nim, tahun: tahun)
+```
 
-NIM : ___
+Yang artinya akan membuat instance baru dari `TampilData` dengan data yang telah dikumpulkan dari form.
 
-Shift Baru: ___
+## 4. Penerimaan Data di TampilData
 
-## Screenshot
-Contoh :
-![Lampiran Form](form.png)
-![Lampiran Hasil](hasil.png)
+`TampilData` didefinisikan untuk menerima data melalui konstruktornya:
+
+```dart
+class TampilData extends StatelessWidget {
+  final String nama;
+  final String nim;
+  final int tahun;
+
+  const TampilData({
+    super.key,
+    required this.nama,
+    required this.nim,
+    required this.tahun,
+  });
+
+}
+```
+
+## 5. Penggunaan Data
+
+Method `build` dari `TampilData` menggunakan data yang diterima untuk menampilkan informasi:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  final int umur = DateTime.now().year - tahun;
+
+  _buildInfoRow(context, "Nama", nama),
+  _buildInfoRow(context, "NIM", nim),
+  _buildInfoRow(context, "Umur", "$umur tahun"),
+
+}
+```
+
+Data `nama` dan `nim` langsung ditampilkan, sedangkan `tahun` digunakan untuk menghitung umur.
+
+# Demo
+<video controls src="demo.mp4">
