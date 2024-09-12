@@ -1,6 +1,9 @@
 Nama       : Jehian Athaya Tsani Az Zuhry
+
 NIM        : H1D022006
+
 Shift Baru : D
+
 
 # Proses Passing Data dari Form ke Tampilan
 
@@ -94,4 +97,4 @@ Widget build(BuildContext context) {
 Data `nama` dan `nim` langsung ditampilkan, sedangkan `tahun` digunakan untuk menghitung umur.
 
 # Demo
-<video controls src="demo.mp4">
+![](https://github.com/send0moka/Tugas2Praktikum2024/blob/main/demo.gif)
